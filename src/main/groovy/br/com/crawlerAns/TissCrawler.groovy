@@ -87,4 +87,24 @@ class TissCrawler {
         }
         return null
     }
+
+    static String obterLinkTabelasRelacionadas(String url) {
+        try {
+            Document doc = acessarPagina(url)
+            return obterLinkPorTexto(doc, "Clique aqui para acessar as planilhas")
+        } catch (Exception e) {
+            println "Erro ao obter o link das tabelas relacionadas: ${e.message}"
+        }
+        return null
+    }
+
+    static String obterLinkTabelaErros(String url) {
+        try {
+            Document doc = acessarPagina(url)
+            return obterLinkPorTexto(doc, "Clique aqui para baixar a tabela de erros no envio para a ANS")
+        } catch (Exception e) {
+            println "Erro ao obter o link da tabela de erros: ${e.message}"
+        }
+        return null
+    }
 }

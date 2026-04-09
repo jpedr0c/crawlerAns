@@ -28,5 +28,19 @@ class Main {
             BaixarArquivos.baixarArquivo(linkComponenteComunicacao, "./Downloads/Arquivos_padrao_TISS/")
         }
 
+        String linkTabelasRelacionadas = TissCrawler.obterLinkTabelasRelacionadas(linkTiss)
+
+        println("\nLink das tabelas relacionadas:")
+        println(linkTabelasRelacionadas)
+
+        String linkTabelasErros= TissCrawler.obterLinkTabelaErros(linkTabelasRelacionadas)
+
+        println("\nLink das tabelas de erros:")
+        println(linkTabelasErros)
+
+        if (linkTabelasErros) {
+            BaixarArquivos.baixarArquivo(linkTabelasErros, "./Downloads/Tabela_erros_ANS/")
+        }
+
     }
 }
