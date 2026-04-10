@@ -107,4 +107,39 @@ class TissCrawler {
         }
         return null
     }
+
+    static String obterLinkHistoricoVersoes(String url) {
+        try {
+            Document doc = acessarPagina(url)
+            return obterLinkPorTexto(doc, "Clique aqui para acessar todas as versões dos Componentes")
+        } catch (Exception e) {
+            println "Erro ao obter o link do histórico de versões do TISS: ${e.message}"
+        }
+        return null
+    }
+
+    static List<String[]> extrairDadosHistorico(Document doc) {
+        List<String[]> dados = new ArrayList<>()
+        try {
+            Elements linhas = doc.select("table tbody tr")
+            for (Element linha : linhas) {
+                Elements colunas = linha.select("td")
+                if (colunas.size() >= 3) {
+                    String competencia = colunas.get(0).text().trim()
+                    String publicacao  = colunas.get(1).text().trim()
+                    String vigencia    = colunas.get(2).text().trim()
+
+                    if (competencia.matches("(?i)[a-zá-ú]{3}/\\d{4}")) {
+                        int ano = competencia.split("/")[1].toInteger()
+                        if (ano >= 2016) {
+                            dados.add([competencia, publicacao, vigencia] as String[])
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            println "Erro ao extrair dados: ${e.message}"
+        }
+        return dados
+    }
 }

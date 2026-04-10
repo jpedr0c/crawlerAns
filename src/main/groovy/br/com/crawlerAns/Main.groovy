@@ -6,41 +6,28 @@ class Main {
 
         String linkPrestador = TissCrawler.obterLinkPrestador("https://www.gov.br/ans")
 
-        println("\nLink prestador:")
-        println(linkPrestador)
-
         String linkTiss = TissCrawler.obterLinkTiss(linkPrestador)
-
-        println("\nLink Tiss:")
-        println(linkTiss)
 
         String linkVersaoTiss = TissCrawler.obterLinkVersaoTiss(linkTiss)
 
-        println("\nLink da versão do Tiss:")
-        println(linkVersaoTiss)
-
         String linkComponenteComunicacao = TissCrawler.obterLinkComponenteComunicacao(linkVersaoTiss)
 
-        println("\nLink do componente de comunicação:")
-        println(linkComponenteComunicacao)
-
         if (linkComponenteComunicacao) {
-            BaixarArquivos.baixarArquivo(linkComponenteComunicacao, "./Downloads/Arquivos_padrao_TISS/")
+            SalvarArquivos.baixarArquivo(linkComponenteComunicacao, "./Downloads/Arquivos_padrao_TISS/")
         }
 
         String linkTabelasRelacionadas = TissCrawler.obterLinkTabelasRelacionadas(linkTiss)
 
-        println("\nLink das tabelas relacionadas:")
-        println(linkTabelasRelacionadas)
-
         String linkTabelasErros= TissCrawler.obterLinkTabelaErros(linkTabelasRelacionadas)
 
-        println("\nLink das tabelas de erros:")
-        println(linkTabelasErros)
-
         if (linkTabelasErros) {
-            BaixarArquivos.baixarArquivo(linkTabelasErros, "./Downloads/Tabela_erros_ANS/")
+            SalvarArquivos.baixarArquivo(linkTabelasErros, "./Downloads/Tabela_erros_ANS/")
         }
 
+        String linkHistoricoVersoes = TissCrawler.obterLinkHistoricoVersoes(linkTiss)
+
+        List<String[]> dados = TissCrawler.extrairDadosHistorico(TissCrawler.acessarPagina(linkHistoricoVersoes))
+
+        SalvarArquivos.salvarArquivoEmCsv(dados, "./Downloads/Historico_versoes_TISS/historico_TISS.csv")
     }
 }
